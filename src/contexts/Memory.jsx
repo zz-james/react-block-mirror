@@ -1,38 +1,38 @@
-import React, { ReactNode, useState } from "react";
+import React, { useRef } from "react";
 
 const buffer = new ArrayBuffer(256);
 
-const MemoryContext = React.createContext({
-  memory: new Uint8Array(buffer, page),
-});
 
-// export type Props = {
-//   initialSelectedTaskId?: ObjectId;
-//   children: ReactNode;
-// };
+const MemoryContext = React.createContext();
 
-function MemoryContextProvider({ initialValue, children }) {
-  const [value, setValue] = useState(initialValue);
+
+const MemoryContextProvider = ({ children }) => {
+
+  const page = useRef(new Uint8Array(buffer, 0));
+
+  page.current[0] = 255;
+  page.current[8] = 255;
+  page.current[255] = 128;
+
+  const memory = page.current
 
   return (
     <MemoryContext.Provider
-      value={{
-        value,
-        setValue,
-      }}
+      value={{memory}}
     >
       {children}
     </MemoryContext.Provider>
   );
 }
 
-function useMemoryContext(page) {
+const useMemoryContext = () => {
   const context = React.useContext(MemoryContext);
   if (context === undefined) {
     throw new Error(
       "useMemoryContext must be used within a MemoryContextProvider"
     );
   }
+
   return context;
 }
 

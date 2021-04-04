@@ -1,11 +1,12 @@
 import React from "react";
 import Nibble from "./Nibble";
 
-const Byte = () => {
+const Byte = ({value}) => {
   return (
     <nobr>
-      <Nibble />
-      <Nibble />
+      {value}
+      {/* <Nibble />
+      <Nibble /> */}
     </nobr>
   );
 };
