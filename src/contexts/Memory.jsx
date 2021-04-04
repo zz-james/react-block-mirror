@@ -3,7 +3,7 @@ import React, { ReactNode, useState } from "react";
 const buffer = new ArrayBuffer(256);
 
 const MemoryContext = React.createContext({
-  memory: new Uint8Array(buffer),
+  memory: new Uint8Array(buffer, page),
 });
 
 // export type Props = {
@@ -26,7 +26,7 @@ function MemoryContextProvider({ initialValue, children }) {
   );
 }
 
-function useMemoryContext() {
+function useMemoryContext(page) {
   const context = React.useContext(MemoryContext);
   if (context === undefined) {
     throw new Error(
