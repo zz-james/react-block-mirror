@@ -12,8 +12,6 @@ const App = () => {
     <MemoryContextProvider size={size}>
       registers:
       <Registers />
-      <br />
-      (a)
       <hr />
       <div>
         <input
