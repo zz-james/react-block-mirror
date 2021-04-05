@@ -1,10 +1,10 @@
 import React from "react";
 import Byte from "./Byte";
-import {useMemoryContext} from "../contexts/Memory";
+import { useMemoryContext } from "../contexts/Memory";
 
 const TableRow = ({ value, row }) =>
   [...value].map((byte, col, __) => (
-    <td>
+    <td key={col}>
       {(col + 16 * row).toString(16)}
       <br />
       <Byte value={byte} />
@@ -12,7 +12,7 @@ const TableRow = ({ value, row }) =>
   ));
 
 const Page = ({ page }) => {
-  const {memory} = useMemoryContext(page);
+  const memory = useMemoryContext(page);
 
   return (
     <>
@@ -21,8 +21,11 @@ const Page = ({ page }) => {
       <table>
         <tbody>
           {[...Array(16)].map((_, row, __) => (
-            <tr>
-              <TableRow row={row} value={memory.slice(row*16,row*16+16)} />
+            <tr key={row}>
+              <TableRow
+                row={row}
+                value={memory.slice(row * 16, row * 16 + 16)}
+              />
             </tr>
           ))}
         </tbody>

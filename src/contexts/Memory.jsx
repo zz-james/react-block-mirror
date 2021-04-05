@@ -1,31 +1,30 @@
 import React, { useRef } from "react";
 
-const buffer = new ArrayBuffer(256);
-
-
 const MemoryContext = React.createContext();
 
+const MemoryContextProvider = ({ size, children }) => {
+  if (size % 256 !== 0) {
+    throw new Error("Memory size must be a multiple of 256");
+  }
 
-const MemoryContextProvider = ({ children }) => {
+  const buffer = new ArrayBuffer(size);
 
-  const page = useRef(new Uint8Array(buffer, 0));
+  const numberOfPages = size / 256;
 
-  page.current[0] = 255;
-  page.current[8] = 255;
-  page.current[255] = 128;
+  let pages = []; // array of 256 byte pages
 
-  const memory = page.current
+  for (let i = 0; i < numberOfPages; i++) {
+    pages[i] = new Uint8Array(buffer, i * 256);
+  }
 
   return (
-    <MemoryContext.Provider
-      value={{memory}}
-    >
+    <MemoryContext.Provider value={{ pages }}>
       {children}
     </MemoryContext.Provider>
   );
-}
+};
 
-const useMemoryContext = () => {
+const useMemoryContext = (page) => {
   const context = React.useContext(MemoryContext);
   if (context === undefined) {
     throw new Error(
@@ -33,7 +32,7 @@ const useMemoryContext = () => {
     );
   }
 
-  return context;
-}
+  return context.pages[page];
+};
 
 export { MemoryContextProvider, useMemoryContext };
