@@ -1,11 +1,13 @@
 import React from "react";
 import Byte from "./Byte";
 import { useMemoryContext } from "../contexts/Memory";
+import { decToHex } from "../utils/numbers";
 
-const TableRow = ({ value, row }) =>
+const TableRow = ({ value, row, page }) =>
   [...value].map((byte, col, __) => (
     <td key={col}>
-      {(col + 16 * row).toString(16)}
+      {decToHex(page)}
+      {decToHex(col + 16 * row)}
       <br />
       <Byte value={byte} />
     </td>
@@ -16,7 +18,7 @@ const Page = ({ page }) => {
 
   return (
     <>
-      <p>page {page}</p>
+      <p>page {decToHex(page)}</p>
 
       <table>
         <tbody>
@@ -24,6 +26,7 @@ const Page = ({ page }) => {
             <tr key={row}>
               <TableRow
                 row={row}
+                page={page}
                 value={memory.slice(row * 16, row * 16 + 16)}
               />
             </tr>

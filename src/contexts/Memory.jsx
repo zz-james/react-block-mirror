@@ -13,7 +13,7 @@ const MemoryContextProvider = ({ size, children }) => {
 
   let pages = []; // array of 256 byte pages
 
-  for (let i = 0; i < numberOfPages; i++) {
+  for (let i = 0; i <= numberOfPages; i++) {
     pages[i] = new Uint8Array(buffer, i * 256);
   }
 
