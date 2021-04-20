@@ -1,3 +1,5 @@
+import Blockly from "./blockly_shims";
+
 function arrayMax(array) {
   return array.reduce(function (a, b) {
     return Math.max(a, b);
@@ -10,13 +12,7 @@ function arrayMin(array) {
   });
 }
 
-function convertElements(key, values, parent) {
-  var output = {};
-  for (var i = 0; i < values.length; i++) {
-    output[key + i] = this.convert(values[i], parent);
-  }
-  return output;
-}
+
 
 const TOP_LEVEL_NODES = ["Module", "Expression", "Interactive", "Suite"];
 const LOCKED_BLOCK = {
@@ -27,11 +23,16 @@ const LOCKED_BLOCK = {
 
 // -------------------------------------------------------- //
 
-class BlockMirrorTextToBlocks {
+export class BlockMirrorTextToBlocks {
+
+  static TOP_LEVEL_NODES = ["Module", "Expression", "Interactive", "Suite"];
+
   constructor(blockMirror) {
     this.blockMirror = blockMirror;
     this.hiddenImports = ["plt"];
     this.strictAnnotations = ["int", "float", "str", "bool"];
+    this.TOP_LEVEL_NODES = ["Module", "Expression", "Interactive", "Suite"];
+    debugger;
     Blockly.defineBlocksWithJsonArray(BlockMirrorTextToBlocks.BLOCKS);
   }
 
@@ -528,6 +529,14 @@ class BlockMirrorTextToBlocks {
       }
     }
     return lineNumbers;
+  }
+
+  convertElements(key, values, parent) {
+    var output = {};
+    for (var i = 0; i < values.length; i++) {
+      output[key + i] = this.convert(values[i], parent);
+    }
+    return output;
   }
 
   ast_Pass() {

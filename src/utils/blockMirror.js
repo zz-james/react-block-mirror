@@ -1,3 +1,6 @@
+import { BlockMirrorTextToBlocks } from "./textToBlocks";
+import { BlockMirrorTextEditor } from "./textEditor";
+import { BlockMirrorBlockEditor } from './blockEditor';
 /**
 
  External visible stuff
@@ -23,7 +26,7 @@
 
  lastBlockConversionFailure: {} or null
  */
-class BlockMirror {
+export class BlockMirror {
   constructor(configuration) {
     this.validateConfiguration(configuration);
     this.initializeVariables();
@@ -53,7 +56,7 @@ class BlockMirror {
     if ("blocklyMediaPath" in configuration) {
       this.configuration.blocklyMediaPath = configuration.blocklyMediaPath;
     } else {
-      this.configuration.blocklyMediaPath = "../../blockly/media/";
+      this.configuration.blocklyMediaPath = "./public/";
     }
 
     // Run function

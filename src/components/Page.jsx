@@ -1,9 +1,6 @@
 import React from "react";
-import { useASTContext } from "../contexts/AST";
 
-const Page = ({ val }) => {
-  const memory = useASTContext(val);
-
+const Page = () => {
   return (
     <>
       <p>page</p>
