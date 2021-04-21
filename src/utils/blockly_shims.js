@@ -153,6 +153,6 @@ Blockly.Variables.nameUsedWithAnyType_ = function (name, workspace) {
 
 /** ------------ end of the original blockly shims file */
 
-const Blockly_SHIM  = Blockly;
+const Blockly_SHIM = Blockly;
 
 export default Blockly_SHIM;

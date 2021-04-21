@@ -5,7 +5,6 @@ import { BlockMirrorTextToBlocks } from "./textToBlocks";
 import { BlockMirrorTextEditor } from "./textEditor";
 import { BlockMirrorBlockEditor } from "./blockEditor";
 
-
 /**
 
  External visible stuff
@@ -32,6 +31,13 @@ import { BlockMirrorBlockEditor } from "./blockEditor";
  lastBlockConversionFailure: {} or null
  */
 export class BlockMirror {
+  VISIBLE_MODES = {
+    block: ["block", "split"],
+    text: ["text", "split"],
+  };
+
+  BREAK_WIDTH = 675;
+  
   constructor(configuration) {
     this.validateConfiguration(configuration);
     this.initializeVariables();
@@ -239,13 +245,6 @@ export class BlockMirror {
     this.blockEditor.setCode(this.code_, true);
   }
 
-  VISIBLE_MODES = {
-    block: ["block", "split"],
-    text: ["text", "split"],
-  };
-
-  BREAK_WIDTH = 675;
-
   setHighlightedLines(lines, style) {
     this.textEditor.setHighlightedLines(lines, style);
     //this.blockEditor.highlightLines(lines, style);
@@ -433,8 +432,14 @@ BlockMirrorTextToBlocks.prototype["ast_For"] = function (node, parent) {
 };
 
 Blockly.Python["ast_ForElse"] = Blockly.Python["ast_For"];
-BlockMirrorTextToBlocks.prototype["ast_ForElse"] =
-  BlockMirrorTextToBlocks.prototype["ast_For"];
+BlockMirrorTextToBlocks.prototype["ast_ForElse"] = BlockMirrorTextToBlocks.prototype["ast_For"];
+
+
+Blockly.Blocks["ast_UnaryOp"] = {
+  // this is not right but what is?
+};  
+
+
 Blockly.Blocks["ast_If"] = {
   init: function init() {
     this.orelse_ = 0;
@@ -1919,6 +1924,9 @@ BlockMirrorTextToBlocks.prototype["ast_UnaryOp"] = function (node, parent) {
     }
   );
 };
+
+
+
 
 BlockMirrorTextToBlocks.BOOLOPS = [
   [

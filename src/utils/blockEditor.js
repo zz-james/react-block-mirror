@@ -6,18 +6,11 @@ import { BlockMirrorTextToBlocks } from "./textToBlocks";
 import { COLOR } from "./color.config";
 import { MODULE_FUNCTION_SIGNATURES_CONFIG } from "./module_function_signatures.config";
 
-const DOCTYPE =
-  '<?xml version="1.0" standalone="no"?> <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
-const BLOCKLY_LOADED_CSS = null;
-const BLOCKLY_CHANGE_EVENTS = [
-  Blockly.Events.CREATE,
-  Blockly.Events.DELETE,
-  Blockly.Events.CHANGE,
-  Blockly.Events.MOVE,
-  Blockly.Events.VAR_RENAME,
-];
-
 export class BlockMirrorBlockEditor {
+  DOCTYPE =
+    '<?xml version="1.0" standalone="no"?> <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
+  BLOCKLY_LOADED_CSS = null;
+
   VIEW_CONFIGURATIONS = {
     split: {
       width: "60%",
@@ -32,7 +25,13 @@ export class BlockMirrorBlockEditor {
       visible: false,
     },
   };
-
+  BLOCKLY_CHANGE_EVENTS = [
+    Blockly.Events.CREATE,
+    Blockly.Events.DELETE,
+    Blockly.Events.CHANGE,
+    Blockly.Events.MOVE,
+    Blockly.Events.VAR_RENAME,
+  ];
   TOOLBOXES = TOOLBOXES;
   static FUNCTION_SIGNATURES = FUNCTION_SIGNATURES_CONFIG;
   static METHOD_SIGNATURES = METHOD_SIGNATURES_CONFIG;
