@@ -1,11 +1,10 @@
 import Blockly from "./blockly_shims";
+import { TOOLBOXES } from "./toolbox.config";
+import { FUNCTION_SIGNATURES_CONFIG } from "./function_signatures.config";
+import { METHOD_SIGNATURES_CONFIG } from "./method_signatures.config";
 import { BlockMirrorTextToBlocks } from "./textToBlocks";
-/**
- * Worth noting - Blockly uses a setTimeOut of 0 steps to make events
- * wait. That has some confusing interaction with trying to make things percolate.
- * @param blockMirror
- * @constructor
- */
+import { COLOR } from "./color.config";
+import { MODULE_FUNCTION_SIGNATURES_CONFIG } from "./module_function_signatures.config";
 
 const DOCTYPE =
   '<?xml version="1.0" standalone="no"?> <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
@@ -17,23 +16,8 @@ const BLOCKLY_CHANGE_EVENTS = [
   Blockly.Events.MOVE,
   Blockly.Events.VAR_RENAME,
 ];
-const VIEW_CONFIGURATIONS = {
-  split: {
-    width: "60%",
-    visible: true,
-  },
-  block: {
-    width: "100%",
-    visible: true,
-  },
-  text: {
-    width: "0%",
-    visible: false,
-  },
-};
 
 export class BlockMirrorBlockEditor {
-
   VIEW_CONFIGURATIONS = {
     split: {
       width: "60%",
@@ -49,11 +33,36 @@ export class BlockMirrorBlockEditor {
     },
   };
 
+  TOOLBOXES = TOOLBOXES;
+  static FUNCTION_SIGNATURES = FUNCTION_SIGNATURES_CONFIG;
+  static METHOD_SIGNATURES = METHOD_SIGNATURES_CONFIG;
+
+  static MODULE_FUNCTION_IMPORTS = {
+    plt: "import matplotlib.pyplot as plt",
+    turtle: "import turtle",
+  };
+
+  static MODULE_FUNCTION_SIGNATURES = MODULE_FUNCTION_SIGNATURES_CONFIG;
+
+  /**
+   * Worth noting - Blockly uses a setTimeOut of 0 steps to make events
+   * wait. That has some confusing interaction with trying to make things percolate.
+   * @param blockMirror
+   * @constructor
+   */
   constructor(blockMirror) {
+    this.EXTRA_TOOLS = {};
     this.blockMirror = blockMirror;
     this.blockContainer = blockMirror.tags.blockContainer;
     this.blockEditor = blockMirror.tags.blockEditor;
     this.blockArea = blockMirror.tags.blockArea;
+
+    BlockMirrorBlockEditor.FUNCTION_SIGNATURES["assert_equal"] =
+      BlockMirrorBlockEditor.MODULE_FUNCTION_SIGNATURES["cisc108"][
+        "assert_equal"
+      ];
+    BlockMirrorBlockEditor.MODULE_FUNCTION_SIGNATURES["matplotlib.pyplot"] =
+      BlockMirrorBlockEditor.MODULE_FUNCTION_SIGNATURES["plt"];
 
     // Null, or the source of the last update
     this.outOfDate_ = null;

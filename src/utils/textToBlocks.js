@@ -1,4 +1,8 @@
 import Blockly from "./blockly_shims";
+import { COLOR } from "./color.config";
+import { FUNCTION_SIGNATURES_CONFIG } from "./function_signatures.config";
+import { MODULE_FUNCTION_SIGNATURES_CONFIG } from "./module_function_signatures.config";
+import { METHOD_SIGNATURES_CONFIG } from "./method_signatures.config";
 
 function arrayMax(array) {
   return array.reduce(function (a, b) {
@@ -12,8 +16,6 @@ function arrayMin(array) {
   });
 }
 
-
-
 const TOP_LEVEL_NODES = ["Module", "Expression", "Interactive", "Suite"];
 const LOCKED_BLOCK = {
   inline: "true",
@@ -24,38 +26,23 @@ const LOCKED_BLOCK = {
 // -------------------------------------------------------- //
 
 export class BlockMirrorTextToBlocks {
-
   static TOP_LEVEL_NODES = ["Module", "Expression", "Interactive", "Suite"];
+
+  FUNCTION_SIGNATURES = FUNCTION_SIGNATURES_CONFIG;
+  MODULE_FUNCTION_SIGNATURES = MODULE_FUNCTION_SIGNATURES_CONFIG;
+  METHOD_SIGNATURES = METHOD_SIGNATURES_CONFIG;
 
   constructor(blockMirror) {
     this.blockMirror = blockMirror;
     this.hiddenImports = ["plt"];
     this.strictAnnotations = ["int", "float", "str", "bool"];
     this.TOP_LEVEL_NODES = ["Module", "Expression", "Interactive", "Suite"];
-    debugger;
     Blockly.defineBlocksWithJsonArray(BlockMirrorTextToBlocks.BLOCKS);
   }
 
   static BLOCKS = [];
 
-  static COLOR = {
-    VARIABLES: 225,
-    FUNCTIONS: 210,
-    OO: 240,
-    CONTROL: 270,
-    MATH: 190,
-    TEXT: 120,
-    FILE: 170,
-    PLOTTING: 140,
-    LOGIC: 345,
-    PYTHON: 60,
-    EXCEPTIONS: 300,
-    SEQUENCES: 15,
-    LIST: 30,
-    DICTIONARY: 0,
-    SET: 10,
-    TUPLE: 20,
-  };
+  static COLOR = COLOR;
 
   static xmlToString(xml) {
     return new XMLSerializer().serializeToString(xml);
@@ -557,6 +544,177 @@ export class BlockMirrorTextToBlocks {
 
   ast_Expression(node) {
     return this.convertBody(node.body, node);
+  }
+
+  ast_Image(node, parent, bmttb) {
+    if (!bmttb.blockMirror.configuration.imageMode) {
+      throw "Not using image constructor";
+    }
+    if (node.args.length !== 1) {
+      throw "More than one argument to Image constructor";
+    }
+    if (node.args[0]._astname !== "Str") {
+      throw "First argument for Image constructor must be string literal";
+    }
+    return BlockMirrorTextToBlocks.create_block(
+      "ast_Image",
+      node.lineno,
+      {},
+      {},
+      {},
+      { "@src": Sk.ffi.remapToJs(node.args[0].s) }
+    );
+  }
+
+  ast_Call(node, parent) {
+    var func = node.func;
+    var args = node.args;
+    var keywords = node.keywords; // Can we make any guesses about this based on its name?
+
+    var signature = null;
+    var isMethod = false;
+    var module = null;
+    var premessage = "";
+    var message = "";
+    var name = "";
+    var caller = null;
+    var colour = COLOR.FUNCTIONS;
+
+    if (func._astname === "Name") {
+      message = name = Sk.ffi.remapToJs(func.id);
+
+      if (name in this.FUNCTION_SIGNATURES) {
+        signature = this.FUNCTION_SIGNATURES[Sk.ffi.remapToJs(func.id)];
+      }
+    } else if (func._astname === "Attribute") {
+      isMethod = true;
+      caller = func.value;
+      var potentialModule = this.getAsModule(caller);
+      var attributeName = Sk.ffi.remapToJs(func.attr);
+      message = "." + attributeName;
+
+      if (potentialModule in this.MODULE_FUNCTION_SIGNATURES) {
+        signature = this.MODULE_FUNCTION_SIGNATURES[potentialModule][
+          attributeName
+        ];
+        module = potentialModule;
+        message = name = potentialModule + message;
+        isMethod = false;
+      } else if (attributeName in this.METHOD_SIGNATURES) {
+        signature = this.METHOD_SIGNATURES[attributeName];
+        name = message;
+      } else {
+        name = message;
+      }
+    } else {
+      isMethod = true;
+      message = "";
+      name = "";
+      caller = func; // (lambda x: x)()
+    }
+
+    var returns = true;
+
+    if (signature !== null && signature !== undefined) {
+      if (signature.custom) {
+        try {
+          return signature.custom(node, parent, this);
+        } catch (e) {
+          console.error(e); // We tried to be fancy and failed, better fall back to default behavior!
+        }
+      }
+
+      if ("returns" in signature) {
+        returns = signature.returns;
+      }
+
+      if ("message" in signature) {
+        message = signature.message;
+      }
+
+      if ("premessage" in signature) {
+        premessage = signature.premessage;
+      }
+
+      if ("colour" in signature) {
+        colour = signature.colour;
+      }
+    }
+
+    returns = returns || parent._astname !== "Expr";
+    var argumentsNormal = {}; // TODO: do I need to be limiting only the *args* length, not keywords?
+
+    var argumentsMutation = {
+      "@arguments":
+        (args !== null ? args.length : 0) +
+        (keywords !== null ? keywords.length : 0),
+      "@returns": returns,
+      "@parameters": true,
+      "@method": isMethod,
+      "@name": name,
+      "@message": message,
+      "@premessage": premessage,
+      "@colour": colour,
+      "@module": module || "",
+    }; // Handle arguments
+
+    var overallI = 0;
+
+    if (args !== null) {
+      for (var i = 0; i < args.length; i += 1, overallI += 1) {
+        argumentsNormal["ARG" + overallI] = this.convert(args[i], node);
+        argumentsMutation["UNKNOWN_ARG:" + overallI] = null;
+      }
+    }
+
+    if (keywords !== null) {
+      for (var _i5 = 0; _i5 < keywords.length; _i5 += 1, overallI += 1) {
+        var keyword = keywords[_i5];
+        var arg = keyword.arg;
+        var value = keyword.value;
+
+        if (arg === null) {
+          argumentsNormal["ARG" + overallI] = this.convert(value, node);
+          argumentsMutation["KWARGS:" + overallI] = null;
+        } else {
+          argumentsNormal["ARG" + overallI] = this.convert(value, node);
+          argumentsMutation["KEYWORD:" + Sk.ffi.remapToJs(arg)] = null;
+        }
+      }
+    } // Build actual block
+
+    var newBlock;
+
+    if (isMethod) {
+      argumentsNormal["FUNC"] = this.convert(caller, node);
+      newBlock = BlockMirrorTextToBlocks.create_block(
+        "ast_Call",
+        node.lineno,
+        {},
+        argumentsNormal,
+        {
+          inline: true,
+        },
+        argumentsMutation
+      );
+    } else {
+      newBlock = BlockMirrorTextToBlocks.create_block(
+        "ast_Call",
+        node.lineno,
+        {},
+        argumentsNormal,
+        {
+          inline: true,
+        },
+        argumentsMutation
+      );
+    } // Return as either statement or expression
+
+    if (returns) {
+      return newBlock;
+    } else {
+      return [newBlock];
+    }
   }
 }
 

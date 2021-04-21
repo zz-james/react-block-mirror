@@ -1,7 +1,7 @@
 {
-  "name": "memorymapfor8bitcomputer",
+  "name": "blockmirror",
   "version": "1.0.0",
-  "description": "memory map for 8 bit computer",
+  "description": "research into block mirror",
   "main": "index.js",
   "scripts": {
     "start": "webpack serve --mode development --open --hot",
@@ -132,6 +132,7 @@
   "license": "MIT",
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@microduino/skuplt": "^1.0.0",
     "blockly": "^5.20210325.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"

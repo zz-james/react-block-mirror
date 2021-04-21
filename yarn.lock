@@ -896,6 +896,11 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.2.tgz#8f03a22a04de437254e8ce8cc84ba39689288752"
   integrity sha512-HyYEUDeIj5rRQU2Hk5HTB2uHsbRQpF70nvMhVzi+VJR0X+xNEhjPui4/kBf3VeH/wqD28PT4sVOm8qqLjBrSZg==
 
+"@microduino/skuplt@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@microduino/skuplt/-/skuplt-1.0.0.tgz#d9ee1ceac02a895f6449297b503bbaadaec65f3c"
+  integrity sha512-Bvb325/r9MprXAJQPIiL28ocbrvnJu8k2OBNFLZU9dEosYJHL7THX0K8fRdGaGHrTUnlQix/XC8K5wagGuKt9w==
+
 "@types/eslint-scope@^3.7.0":
   version "3.7.0"
   resolved "https://registry.yarnpkg.com/@types/eslint-scope/-/eslint-scope-3.7.0.tgz#4792816e31119ebd506902a482caec4951fabd86"
