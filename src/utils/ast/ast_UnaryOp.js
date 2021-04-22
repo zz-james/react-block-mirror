@@ -1,8 +1,7 @@
 export const add_ast_UnaryOp = ([Blockly, BlockMirrorTextToBlocks]) => {
-
   Blockly.Blocks["ast_UnaryOp"] = {
     // this is not right but what is?
-  }; 
+  };
 
   BlockMirrorTextToBlocks.UNARYOPS = [
     ["+", "UAdd", "Do nothing to the number"],
