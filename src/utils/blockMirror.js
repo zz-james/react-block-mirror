@@ -1,36 +1,11 @@
 // import Sk from '@microduino/skuplt';  //can't do this as not an es6 module https://github.com/skulpt/skulpt/issues/794
 // also note skulpt is not completely python3 compatable...
-import  Blockly from "./blockly_shims";
+import Blockly from "./blockly_shims";
 import { BlockMirrorTextToBlocks } from "./textToBlocks";
 import { BlockMirrorTextEditor } from "./textEditor";
 import { BlockMirrorBlockEditor } from "./blockEditor";
 import { addAstTypes } from "./ast/index";
 
-/**
-
- External visible stuff
-
- Changing mode/code can fail on the block side
-
- setMode(mode) -> bool
- setCode(filename, code) -> bool
- setHighlight(line) -> bool
- setReadOnly(isReadOnly)
- setToolbox(string)
- 'basic'
- 'advanced'
- 'complete'
- list[list[string]]
- onChange(event) ->
- onModeChange
- onCodeChange
-
- getCode() -> string
- getMode() -> string
- getImage(callback)
-
- lastBlockConversionFailure: {} or null
- */
 export class BlockMirror {
   VISIBLE_MODES = {
     block: ["block", "split"],
@@ -40,7 +15,6 @@ export class BlockMirror {
   BREAK_WIDTH = 675;
 
   constructor(configuration) {
-
     // add ast types to Blockly and texttoblocks
     const [_, BlockMirrorTextToBlocksPlus] = addAstTypes([
       Blockly,
@@ -57,8 +31,6 @@ export class BlockMirror {
     this.textToBlocks = new BlockMirrorTextToBlocksPlus(this);
     this.textEditor = new BlockMirrorTextEditor(this);
     this.blockEditor = new BlockMirrorBlockEditor(this);
-
-    this.setMode(this.configuration.viewMode);
   }
 
   validateConfiguration(configuration) {
@@ -147,7 +119,6 @@ export class BlockMirror {
 
     // Files
     this.code_ = "";
-    this.mode_ = null;
 
     // Update Flags
     this.silenceBlock = false;
@@ -215,35 +186,6 @@ export class BlockMirror {
     return this.code_;
   }
 
-  getMode() {
-    return this.mode_;
-  }
-
-  setMode(mode) {
-    this.mode_ = mode;
-    this.blockEditor.setMode(mode);
-    this.textEditor.setMode(mode);
-  }
-
-  setImageMode(imageMode) {
-    this.configuration.imageMode = imageMode;
-    if (imageMode) {
-      this.textEditor.enableImages();
-    } else {
-      this.textEditor.disableImages();
-    }
-    console.log(imageMode);
-  }
-
-  setReadOnly(isReadOnly) {
-    this.textEditor.setReadOnly(isReadOnly);
-    this.blockEditor.setReadOnly(isReadOnly);
-    $(this.configuration.container).toggleClass(
-      "block-mirror-read-only",
-      isReadOnly
-    );
-  }
-
   refresh() {
     this.blockEditor.resized();
     this.textEditor.codeMirror.refresh();
@@ -253,13 +195,4 @@ export class BlockMirror {
     this.blockEditor.setCode(this.code_, true);
   }
 
-  setHighlightedLines(lines, style) {
-    this.textEditor.setHighlightedLines(lines, style);
-    //this.blockEditor.highlightLines(lines, style);
-  }
-
-  clearHighlightedLines() {
-    this.textEditor.clearHighlightedLines();
-    //this.blockEditor.unhighlightLines(lines, style);
-  }
 }
