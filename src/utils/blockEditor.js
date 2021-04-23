@@ -70,30 +70,13 @@ export class BlockMirrorBlockEditor {
     );
     // Configure Blockly
     this.workspace.addChangeListener(this.changed.bind(this));
-
-    // Configure Blockly DIV
-    this.blockContainer.style.float = "left";
-    this.blockEditor.style.position = "absolute";
-    this.blockEditor.style.width = "100%";
-    this.blockArea.style.height = blockMirror.configuration.height + "px";
-
-    this.readOnlyDiv_ = null;
-
-    this.blockContainer.style.width = "60%";
-    this.blockContainer.style.height = "500px";
-    this.blockArea.style.height = "500px";
-    // Compute the absolute coordinates and dimensions of blocklyArea.
-    let blockArea = this.blockMirror.tags.blockArea;
-    let blockEditor = this.blockMirror.tags.blockEditor;
-    blockEditor.style.width = blockArea.offsetWidth + "px";
-    blockEditor.style.height = blockArea.offsetHeight + "px";
     Blockly.svgResize(this.workspace);
   }
 
   /**
    * creates XML string to define toolbox
-   * @param {} toolboxPython 
-   * @returns 
+   * @param {} toolboxPython
+   * @returns
    */
   toolboxPythonToBlocks(toolboxPython) {
     Blockly.Variables._HIDE_GETTERS_SETTERS = false;
@@ -195,9 +178,7 @@ export class BlockMirrorBlockEditor {
     }
     if (quietly) {
       Blockly.Events.enable();
-    } else {
-      this.blockMirror.setCode(code, true);
-    }
+    } 
     this.outOfDate_ = null;
   }
 
@@ -226,5 +207,4 @@ export class BlockMirrorBlockEditor {
       this.BLOCKLY_LOADED_CSS = result;
     }
   }
-
 }

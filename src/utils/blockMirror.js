@@ -7,12 +7,6 @@ import { BlockMirrorBlockEditor } from "./blockEditor";
 import { addAstTypes } from "./ast/index";
 
 export class BlockMirror {
-  VISIBLE_MODES = {
-    block: ["block", "split"],
-    text: ["text", "split"],
-  };
-
-  BREAK_WIDTH = 675;
 
   constructor(configuration) {
     // add ast types to Blockly and texttoblocks
@@ -22,7 +16,7 @@ export class BlockMirror {
     ]);
 
     this.validateConfiguration(configuration);
-    this.initializeVariables();
+    this.createElements();
 
     if (!this.configuration.skipSkulpt) {
       this.loadSkulpt();
@@ -92,7 +86,7 @@ export class BlockMirror {
     this.configuration.imageMode = configuration.imageMode || false;
   }
 
-  initializeVariables() {
+  createElements() {
     this.tags = {
       toolbar: document.createElement("div"),
       blockContainer: document.createElement("div"),
@@ -102,6 +96,15 @@ export class BlockMirror {
       textContainer: document.createElement("div"),
       textArea: document.createElement("textarea"),
     };
+
+    this.tags.toolbar.className = "toolbar";
+    this.tags.blockContainer.className = "blockContainer";
+    this.tags.blockEditor.className = "blockEditor";
+    this.tags.blockArea.className = "blockArea";
+    this.tags.textSidebar.className = "textSidebar";
+    this.tags.textContainer.className = "textContainer";
+    this.tags.textArea.className = "textArea";
+
     // Toolbar
     this.configuration.container.appendChild(this.tags.toolbar);
     // Block side
@@ -112,29 +115,6 @@ export class BlockMirror {
     this.configuration.container.appendChild(this.tags.textContainer);
     this.tags.textContainer.appendChild(this.tags.textSidebar);
     this.tags.textContainer.appendChild(this.tags.textArea);
-
-    for (let name in this.tags) {
-      this.tags[name].style["box-sizing"] = "border-box";
-    }
-
-    // Files
-    this.code_ = "";
-
-    // Update Flags
-    this.silenceBlock = false;
-    this.silenceBlockTimer = null;
-    this.silenceText = false;
-    this.silenceModel = 0;
-    this.blocksFailed = false;
-    this.blocksFailedTimeout = null;
-    this.triggerOnChange = null;
-    this.firstEdit = true;
-
-    // Toolbox width
-    this.blocklyToolboxWidth = 0;
-
-    // Listeners
-    this.listeners_ = [];
   }
 
   loadSkulpt() {
@@ -150,49 +130,6 @@ export class BlockMirror {
         return Sk.builtinFiles["files"][filename];
       },
     });
-  }
-
-  removeAllChangeListeners() {
-    this.listeners_.length = 0;
-  }
-
-  removeChangeListener(callback) {
-    let index = this.listeners_.indexOf(callback);
-    if (index !== -1) {
-      this.listeners_.splice(index, 1);
-    }
-  }
-
-  addChangeListener(callback) {
-    this.listeners_.push(callback);
-  }
-
-  fireChangeListener(e) {
-    for (let i = 0, func; (func = this.listeners_[i]); i++) {
-      func(e);
-    }
-  }
-
-  setCode(code, quietly) {
-    this.code_ = code;
-    if (!quietly) {
-      this.blockEditor.setCode(code, true);
-      this.textEditor.setCode(code, true);
-    }
-    this.fireChangeListener({ name: "changed", value: code });
-  }
-
-  getCode() {
-    return this.code_;
-  }
-
-  refresh() {
-    this.blockEditor.resized();
-    this.textEditor.codeMirror.refresh();
-  }
-
-  forceBlockRefresh() {
-    this.blockEditor.setCode(this.code_, true);
   }
 
 }

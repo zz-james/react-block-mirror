@@ -53,17 +53,9 @@ export class BlockMirrorTextEditor {
     this.codeMirror.on("change", this.changed.bind(this));
     this.codeMirror.setSize(null, "100%");
     this.imageMarkers = [];
-    this.textContainer.style.border = "1px solid lightgray";
-    this.textContainer.style.float = "left";
-    this.textContainer.style.height = blockMirror.configuration.height;
-    // Style sidebar
-    this.textSidebar.style.height = "100%";
-    this.textSidebar.style.float = "left";
-    this.textSidebar.style.backgroundColor = "#ddd";
 
-    this.textContainer.style.width = "40%";
     this.textContainer.style.height = "500px";
-    this.textContainer.style.display = "block";
+
     this.codeMirror.getWrapperElement().style.display = "block";
     this.codeMirror.refresh();
   }
@@ -87,7 +79,6 @@ export class BlockMirrorTextEditor {
       let handleChange = () => {
         let newCode = this.getCode();
         this.blockMirror.blockEditor.setCode(newCode, true);
-        this.blockMirror.setCode(newCode, true);
       };
       if (this.blockMirror.configuration.blockDelay === false) {
         handleChange();
