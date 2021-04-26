@@ -1,0 +1,33 @@
+This is not really integrated into react any more than the fact that React renders a div and a ref to that div gets passed to the constructor of the blockMirror object.
+
+blockMirror constructor is the start point.
+
+The blockMirror constructor creates the other DOM elements (plain JS appending to DOM)
+
+it also calls configure on the Skulpt object, because Skulp is not an ES6 module and I've not looked much at how it works I've left that just loaded using a script tag for now, this means there's a global SK object.
+
+the blockMirror constructor finally creates the 3 object which do the work,
+
+1. textToBlocks = contains the stuff that calls skulpt with the code to convert it into an AST and also the stuff to convert the AST into XML for Blockly
+
+2. textEditor = wraps codemirror and handles the get and set methods for code in codemirror
+
+3. blockEditor = wraps Blockly, sets up the toolbox config (the bit with on the left of blockly) and handles get and set of blockly's code
+
+there's various config files;
+- color.config = holds colour values which blockly uses for categories of blocks 
+- function_signatures.config, method_signatures.config, module_function_signatures.config - I'm not entirely sure what these do but I'm guessing from their titles they help format code where modules/methods/functions where it needs a bit more than statements and expressions
+- toolbox.config = defines the left hand toolbox for blockly
+
+there's a file called blockly_shims which seems to apply a few odds and ends to blockly to get it to work how it needs to, some part if commented that it is to do with case sensitivity in variable names but there's more to it that I haven't learned yet
+
+then finally there's a ast folder which has behaviour to deal with each of the node types you might possibly have in the ast produced by skulpt, some of these are short and some are long, each file seems to consist of the function that gets called by the xml generator, in the format
+
+BlockMirrorTextToBlocks.prototype[*ast node type*] = function (node, parent) 
+
+and an object which lives in the BlockMirrorTextToBlocks.BLOCKS array
+
+and a function is usually added to Blockly.Python
+
+Probably a key bit of understanding is what is in each of these files and how that works....
+
