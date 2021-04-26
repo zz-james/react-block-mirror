@@ -10,9 +10,6 @@ export class BlockMirrorTextEditor {
     // notification
     this.silentEvents_ = false;
 
-    // Do we need to force an update?
-    this.outOfDate_ = null;
-
     // Use a timer to swallow updates
     this.updateTimer_ = null;
 
