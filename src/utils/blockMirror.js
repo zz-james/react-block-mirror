@@ -1,10 +1,16 @@
 // import Sk from '@microduino/skuplt';  //can't do this as not an es6 module https://github.com/skulpt/skulpt/issues/794
 // also note skulpt is not completely python3 compatable...
-import Blockly from "./blockly_shims";
+
+import Blockly from "blockly";
+import "blockly/blocks";
+import "blockly/python";
+import * as En from "blockly/msg/en-gb";
 import { BlockMirrorTextToBlocks } from "./textToBlocks";
 import { BlockMirrorTextEditor } from "./textEditor";
 import { BlockMirrorBlockEditor } from "./blockEditor";
 import { addAstTypes } from "./ast/index";
+
+Blockly.setLocale(En);
 
 export class BlockMirror {
 

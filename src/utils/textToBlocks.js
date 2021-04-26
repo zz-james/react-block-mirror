@@ -1,4 +1,4 @@
-import Blockly from "./blockly_shims";
+import Blockly from "blockly";
 import { COLOR } from "./color.config";
 import { FUNCTION_SIGNATURES_CONFIG } from "./function_signatures.config";
 import { MODULE_FUNCTION_SIGNATURES_CONFIG } from "./module_function_signatures.config";
@@ -16,19 +16,17 @@ function arrayMin(array) {
   });
 }
 
-const TOP_LEVEL_NODES = ["Module", "Expression", "Interactive", "Suite"];
 
-const LOCKED_BLOCK = {
-  inline: "true",
-  deletable: "false",
-  movable: "false",
-};
 
 // -------------------------------------------------------- //
 
 export class BlockMirrorTextToBlocks {
   static TOP_LEVEL_NODES = ["Module", "Expression", "Interactive", "Suite"];
-
+  static LOCKED_BLOCK = {
+    inline: "true",
+    deletable: "false",
+    movable: "false",
+  };
   FUNCTION_SIGNATURES = FUNCTION_SIGNATURES_CONFIG;
   MODULE_FUNCTION_SIGNATURES = MODULE_FUNCTION_SIGNATURES_CONFIG;
   METHOD_SIGNATURES = METHOD_SIGNATURES_CONFIG;
@@ -614,7 +612,7 @@ export class BlockMirrorTextToBlocks {
   }
 }
 
-// Blockly.Python['blank'] = '___';
+Blockly.Python['blank'] = '___';
 
 let ZERO_BLOCK = BlockMirrorTextToBlocks.create_block("ast_Num", null, {
   NUM: 0,

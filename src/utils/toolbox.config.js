@@ -1,385 +1,340 @@
-const TOOLBOX_CATEGORY = {};
-
-TOOLBOX_CATEGORY.VARIABLES = {
-  name: "Variables",
-  colour: "VARIABLES",
-  custom: "VARIABLE",
-};
-TOOLBOX_CATEGORY.DECISIONS = {
-  name: "Decisions",
-  colour: "LOGIC",
-  blocks: [
-    "if ___: pass",
-    "if ___: pass\nelse: pass",
-    "___ < ___",
-    "___ and ___",
-    "not ___",
-  ],
-};
-TOOLBOX_CATEGORY.CALCULATIONS = {
-  name: "Calculation",
-  colour: "MATH",
-  blocks: ["___ + ___", "round(___)"],
-};
-TOOLBOX_CATEGORY.OUTPUT_WITH_PLOTTING = {
-  name: "Output",
-  colour: "PLOTTING",
-  blocks: [
-    "print(___)",
-    "plt.plot(___)",
-    "plt.scatter(___, ___)",
-    "plt.hist(___)",
-    "plt.show()",
-    "plt.title(___)",
-    "plt.xlabel(___)",
-    "plt.ylabel(___)",
-  ],
-};
-TOOLBOX_CATEGORY.TURTLES = {
-  name: "Turtles",
-  colour: "PLOTTING",
-  blocks: [
-    "turtle.mainloop()",
-    "turtle.forward(50)",
-    "turtle.backward(50)",
-    "turtle.right(90)",
-    "turtle.left(90)",
-    "turtle.goto(0, 0)",
-    "turtle.setx(100)",
-    "turtle.sety(100)",
-    "turtle.setheading(270)",
-    "turtle.pendown()",
-    "turtle.penup()",
-    "turtle.pencolor('blue')",
-  ],
-};
-TOOLBOX_CATEGORY.INPUT = {
-  name: "Input",
-  colour: "TEXT",
-  blocks: ["input('')"],
-};
-TOOLBOX_CATEGORY.VALUES = {
-  name: "Values",
-  colour: "TEXT",
-  blocks: ['""', "0", "True"],
-};
-TOOLBOX_CATEGORY.SEP = "<sep></sep>";
-
-TOOLBOX_CATEGORY.CONVERSIONS = {
-  name: "Conversion",
-  colour: "TEXT",
-  blocks: ["int(___)", "float(___)", "str(___)", "bool(___)"],
-};
-
-TOOLBOX_CATEGORY.DICTIONARIES = {
-  name: "Dictionaries",
-  colour: "DICTIONARY",
-  blocks: [
-    "{'1st key': ___, '2nd key': ___, '3rd key': ___}",
-    "{}",
-    "___['key']",
-  ],
-};
-
-export const TOOLBOXES = {
-  //******************************************************
-  minimal: [
-    // TODO: What should live in here?
-    TOOLBOX_CATEGORY.VARIABLES,
-  ],
-  //******************************************************
-  normal: [
-    TOOLBOX_CATEGORY.VARIABLES,
-    TOOLBOX_CATEGORY.DECISIONS,
-    {
-      name: "Iteration",
-      colour: "CONTROL",
-      blocks: ["for ___ in ___: pass", "while ___: pass", "break"],
-    },
-    {
-      name: "Functions",
-      colour: "FUNCTIONS",
-      blocks: [
-        "def ___(___): pass",
-        "def ___(___: int)->str: pass",
-        "return ___",
-      ],
-    },
-    TOOLBOX_CATEGORY.SEP,
-    TOOLBOX_CATEGORY.CALCULATIONS,
-    TOOLBOX_CATEGORY.OUTPUT_WITH_PLOTTING,
-    TOOLBOX_CATEGORY.INPUT,
-    TOOLBOX_CATEGORY.TURTLES,
-    TOOLBOX_CATEGORY.SEP,
-    TOOLBOX_CATEGORY.VALUES,
-    TOOLBOX_CATEGORY.CONVERSIONS,
-    {
-      name: "Lists",
-      colour: "LIST",
-      blocks: [
-        "[0, 0, 0]",
-        "[___, ___, ___]",
-        "[]",
-        "___.append(___)",
-        "range(0, 10)",
-      ],
-    },
-    TOOLBOX_CATEGORY.DICTIONARIES,
-  ],
-  //******************************************************
-  ct: [
-    TOOLBOX_CATEGORY.VARIABLES,
-    TOOLBOX_CATEGORY.DECISIONS,
-    {
-      name: "Iteration",
-      colour: "CONTROL",
-      blocks: ["for ___ in ___: pass"],
-    },
-    TOOLBOX_CATEGORY.SEP,
-    TOOLBOX_CATEGORY.CALCULATIONS,
-    TOOLBOX_CATEGORY.OUTPUT_WITH_PLOTTING,
-    TOOLBOX_CATEGORY.INPUT,
-    TOOLBOX_CATEGORY.SEP,
-    TOOLBOX_CATEGORY.VALUES,
-    TOOLBOX_CATEGORY.CONVERSIONS,
-    {
-      name: "Lists",
-      colour: "LIST",
-      blocks: ["[0, 0, 0]", "[___, ___, ___]", "[]", "___.append(___)"],
-    },
-  ],
-  //******************************************************
-  full: [
-    TOOLBOX_CATEGORY.VARIABLES,
-    {
-      name: "Literal Values",
-      colour: "LIST",
-      blocks: [
-        "0",
-        "''",
-        "True",
-        "None",
-        "[___, ___, ___]",
-        "(___, ___, ___)",
-        "{___, ___, ___}",
-        "{___: ___, ___: ___, ___: ___}",
-      ],
-    },
-    {
-      name: "Calculations",
-      colour: "MATH",
-      blocks: ["-___", "___ + ___", "___ >> ___", "abs(___)", "round(___)"],
-    },
-    {
-      name: "Logic",
-      colour: "LOGIC",
-      blocks: [
-        "___ if ___ else ___",
-        "___ == ___",
-        "___ < ___",
-        "___ in ___",
-        "___ and ___",
-        "not ___",
-      ],
-    },
-    TOOLBOX_CATEGORY.SEP,
-    {
-      name: "Classes",
-      colour: "OO",
-      blocks: [
-        "class ___: pass",
-        "class ___(___): pass",
-        "___.___",
-        "___: ___",
-        "super()",
-      ],
-    },
-    {
-      name: "Functions",
-      colour: "FUNCTIONS",
-      blocks: [
-        "def ___(___): pass",
-        "def ___(___: int)->str: pass",
-        "return ___",
-        "yield ___",
-        "lambda ___: ___",
-      ],
-    },
-    {
-      name: "Imports",
-      colour: "PYTHON",
-      blocks: [
-        "import ___",
-        "from ___ import ___",
-        "import ___ as ___",
-        "from ___ import ___ as ___",
-      ],
-    },
-    TOOLBOX_CATEGORY.SEP,
-    {
-      name: "Control Flow",
-      colour: "CONTROL",
-      blocks: [
-        "if ___: pass",
-        "if ___: pass\nelse: pass",
-        "for ___ in ___: pass",
-        "while ___: pass",
-        "break",
-        "continue",
-        "try: pass\nexcept ___ as ___: pass",
-        "raise ___",
-        "assert ___",
-        "with ___ as ___: pass",
-      ],
-    },
-    TOOLBOX_CATEGORY.SEP,
-    TOOLBOX_CATEGORY.OUTPUT_WITH_PLOTTING,
-    TOOLBOX_CATEGORY.INPUT,
-    {
-      name: "Files",
-      colour: "FILE",
-      blocks: [
-        "with open('', 'r') as ___: pass",
-        "___.read()",
-        "___.readlines()",
-        "___.write(___)",
-        "___.writelines(___)",
-      ],
-    },
-    TOOLBOX_CATEGORY.SEP,
-    {
-      name: "Conversion",
-      colour: "TEXT",
-      blocks: [
-        "int(___)",
-        "float(___)",
-        "str(___)",
-        "chr(___)",
-        "bool(___)",
-        "list(___)",
-        "dict(___)",
-        "tuple(___)",
-        "set(___)",
-        "type(___)",
-        "isinstance(___)",
-      ],
-    },
-    {
-      name: "Builtin Functions",
-      colour: "SEQUENCES",
-      blocks: [
-        "len(___)",
-        "sorted(___)",
-        "enumerate(___)",
-        "reversed(___)",
-        "range(0, 10)",
-        "min(___, ___)",
-        "max(___, ___)",
-        "sum(___)",
-        "all(___)",
-        "any(___)",
-        "zip(___, ___)",
-        "map(___, ___)",
-        "filter(___, ___)",
-      ],
-    },
-    {
-      name: "List Methods",
-      colour: "LIST",
-      blocks: ["___.append(___)", "___.pop()", "___.clear()"],
-    },
-    {
-      name: "String Methods",
-      colour: "TEXT",
-      blocks: [
-        "___.startswith('')",
-        "___.endswith('')",
-        "___.replace('', '')",
-        "___.lower('')",
-        "___.upper('')",
-        "___.title('')",
-        "___.strip('')",
-        "___.split('')",
-        "''.join(___)",
-        "___.format('')",
-        "___.strip('')",
-      ],
-    },
-    {
-      name: "Subscripting",
-      colour: "SEQUENCES",
-      blocks: ["___[___]", "___[___:___]", "___[___:___:___]"],
-    },
-    {
-      name: "Generators",
-      colour: "SEQUENCES",
-      blocks: [
-        "[___ for ___ in ___]",
-        "(___ for ___ in ___)",
-        "{___ for ___ in ___}",
-        "{___: ___ for ___ in ___ if ___}",
-        "[___ for ___ in ___ if ___]",
-        "(___ for ___ in ___ if ___)",
-        "{___ for ___ in ___ if ___}",
-        "{___: ___ for ___ in ___ if ___}",
-      ],
-    },
-    {
-      name: "Comments",
-      colour: "PYTHON",
-      blocks: ["# ", '"""\n"""'],
-    },
-  ],
-  //******************************************************
-  ct2: [
-    {
-      name: "Memory",
-      colour: "VARIABLES",
-      custom: "VARIABLE",
-      hideGettersSetters: true,
-    },
-    TOOLBOX_CATEGORY.SEP,
-    '<category name="Expressions" expanded="true">',
-    {
-      name: "Constants",
-      colour: "TEXT",
-      blocks: ['""', "0", "True", "[0, 0, 0]", "[___, ___, ___]", "[]"],
-    },
-    {
-      name: "Variables",
-      colour: "VARIABLES",
-      blocks: ["VARIABLE"],
-    },
-    TOOLBOX_CATEGORY.CALCULATIONS,
-    TOOLBOX_CATEGORY.CONVERSIONS,
-    {
-      name: "Conditions",
-      colour: "LOGIC",
-      blocks: ["___ == ___", "___ and ___", "not ___"],
-    },
-    TOOLBOX_CATEGORY.INPUT,
-    "</category>",
-    TOOLBOX_CATEGORY.SEP,
-    '<category name="Operations" expanded="true">',
-    {
-      name: "Assignment",
-      colour: "VARIABLES",
-      blocks: ["VARIABLE = ___", "___.append(___)"],
-    },
-    TOOLBOX_CATEGORY.OUTPUT_WITH_PLOTTING,
-    "</category>",
-    TOOLBOX_CATEGORY.SEP,
-    '<category name="Control" expanded="true">',
-    {
-      name: "Decision",
-      colour: "CONTROL",
-      blocks: ["if ___: pass", "if ___: pass\nelse: pass"],
-    },
-    {
-      name: "Iteration",
-      colour: "CONTROL",
-      blocks: ["for ___ in ___: pass"],
-    },
-    "</category>",
-  ],
-};
+export default `<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox-categories" style="display: none">
+<category name="Logic" categorystyle="logic_category">
+  <block type="controls_if"></block>
+  <block type="logic_compare"></block>
+  <block type="logic_operation"></block>
+  <block type="logic_negate"></block>
+  <block type="logic_boolean"></block>
+  <block type="logic_null" disabled="true"></block>
+  <block type="logic_ternary"></block>
+</category>
+<category name="Loops" categorystyle="loop_category">
+  <block type="controls_repeat_ext">
+    <value name="TIMES">
+      <shadow type="math_number">
+        <field name="NUM">10</field>
+      </shadow>
+    </value>
+  </block>
+  <block type="controls_repeat" disabled="true"></block>
+  <block type="controls_whileUntil"></block>
+  <block type="controls_for">
+    <value name="FROM">
+      <shadow type="math_number">
+        <field name="NUM">1</field>
+      </shadow>
+    </value>
+    <value name="TO">
+      <shadow type="math_number">
+        <field name="NUM">10</field>
+      </shadow>
+    </value>
+    <value name="BY">
+      <shadow type="math_number">
+        <field name="NUM">1</field>
+      </shadow>
+    </value>
+  </block>
+  <block type="controls_forEach"></block>
+  <block type="controls_flow_statements"></block>
+</category>
+<category name="Math" categorystyle="math_category">
+  <block type="math_number" gap="32">
+    <field name="NUM">123</field>
+  </block>
+  <block type="math_arithmetic">
+    <value name="A">
+      <shadow type="math_number">
+        <field name="NUM">1</field>
+      </shadow>
+    </value>
+    <value name="B">
+      <shadow type="math_number">
+        <field name="NUM">1</field>
+      </shadow>
+    </value>
+  </block>
+  <block type="math_single">
+    <value name="NUM">
+      <shadow type="math_number">
+        <field name="NUM">9</field>
+      </shadow>
+    </value>
+  </block>
+  <block type="math_trig">
+    <value name="NUM">
+      <shadow type="math_number">
+        <field name="NUM">45</field>
+      </shadow>
+    </value>
+  </block>
+  <block type="math_constant"></block>
+  <block type="math_number_property">
+    <value name="NUMBER_TO_CHECK">
+      <shadow type="math_number">
+        <field name="NUM">0</field>
+      </shadow>
+    </value>
+  </block>
+  <block type="math_round">
+    <value name="NUM">
+      <shadow type="math_number">
+        <field name="NUM">3.1</field>
+      </shadow>
+    </value>
+  </block>
+  <block type="math_on_list"></block>
+  <block type="math_modulo">
+    <value name="DIVIDEND">
+      <shadow type="math_number">
+        <field name="NUM">64</field>
+      </shadow>
+    </value>
+    <value name="DIVISOR">
+      <shadow type="math_number">
+        <field name="NUM">10</field>
+      </shadow>
+    </value>
+  </block>
+  <block type="math_constrain">
+    <value name="VALUE">
+      <shadow type="math_number">
+        <field name="NUM">50</field>
+      </shadow>
+    </value>
+    <value name="LOW">
+      <shadow type="math_number">
+        <field name="NUM">1</field>
+      </shadow>
+    </value>
+    <value name="HIGH">
+      <shadow type="math_number">
+        <field name="NUM">100</field>
+      </shadow>
+    </value>
+  </block>
+  <block type="math_random_int">
+    <value name="FROM">
+      <shadow type="math_number">
+        <field name="NUM">1</field>
+      </shadow>
+    </value>
+    <value name="TO">
+      <shadow type="math_number">
+        <field name="NUM">100</field>
+      </shadow>
+    </value>
+  </block>
+  <block type="math_random_float"></block>
+  <block type="math_atan2">
+    <value name="X">
+      <shadow type="math_number">
+        <field name="NUM">1</field>
+      </shadow>
+    </value>
+    <value name="Y">
+      <shadow type="math_number">
+        <field name="NUM">1</field>
+      </shadow>
+    </value>
+  </block>
+</category>
+<category name="Text" categorystyle="text_category">
+  <block type="text"></block>
+  <block type="text_multiline"></block>
+  <block type="text_join"></block>
+  <block type="text_append">
+    <value name="TEXT">
+      <shadow type="text"></shadow>
+    </value>
+  </block>
+  <block type="text_length">
+    <value name="VALUE">
+      <shadow type="text">
+        <field name="TEXT">abc</field>
+      </shadow>
+    </value>
+  </block>
+  <block type="text_isEmpty">
+    <value name="VALUE">
+      <shadow type="text">
+        <field name="TEXT"></field>
+      </shadow>
+    </value>
+  </block>
+  <block type="text_indexOf">
+    <value name="VALUE">
+      <block type="variables_get">
+        <field name="VAR">text</field>
+      </block>
+    </value>
+    <value name="FIND">
+      <shadow type="text">
+        <field name="TEXT">abc</field>
+      </shadow>
+    </value>
+  </block>
+  <block type="text_charAt">
+    <value name="VALUE">
+      <block type="variables_get">
+        <field name="VAR">text</field>
+      </block>
+    </value>
+  </block>
+  <block type="text_getSubstring">
+    <value name="STRING">
+      <block type="variables_get">
+        <field name="VAR">text</field>
+      </block>
+    </value>
+  </block>
+  <block type="text_changeCase">
+    <value name="TEXT">
+      <shadow type="text">
+        <field name="TEXT">abc</field>
+      </shadow>
+    </value>
+  </block>
+  <block type="text_trim">
+    <value name="TEXT">
+      <shadow type="text">
+        <field name="TEXT">abc</field>
+      </shadow>
+    </value>
+  </block>
+  <block type="text_count">
+    <value name="SUB">
+      <shadow type="text"></shadow>
+    </value>
+    <value name="TEXT">
+      <shadow type="text"></shadow>
+    </value>
+  </block>
+  <block type="text_replace">
+    <value name="FROM">
+      <shadow type="text"></shadow>
+    </value>
+    <value name="TO">
+      <shadow type="text"></shadow>
+    </value>
+    <value name="TEXT">
+      <shadow type="text"></shadow>
+    </value>
+  </block>
+  <block type="text_reverse">
+    <value name="TEXT">
+      <shadow type="text"></shadow>
+    </value>
+  </block>
+  <label text="Input/Output:" web-class="ioLabel"></label>
+  <block type="text_print">
+    <value name="TEXT">
+      <shadow type="text">
+        <field name="TEXT">abc</field>
+      </shadow>
+    </value>
+  </block>
+  <block type="text_prompt_ext">
+    <value name="TEXT">
+      <shadow type="text">
+        <field name="TEXT">abc</field>
+      </shadow>
+    </value>
+  </block>
+</category>
+<category name="Lists" categorystyle="list_category">
+  <block type="lists_create_with">
+    <mutation items="0"></mutation>
+  </block>
+  <block type="lists_create_with"></block>
+  <block type="lists_repeat">
+    <value name="NUM">
+      <shadow type="math_number">
+        <field name="NUM">5</field>
+      </shadow>
+    </value>
+  </block>
+  <block type="lists_length"></block>
+  <block type="lists_isEmpty"></block>
+  <block type="lists_indexOf">
+    <value name="VALUE">
+      <block type="variables_get">
+        <field name="VAR">list</field>
+      </block>
+    </value>
+  </block>
+  <block type="lists_getIndex">
+    <value name="VALUE">
+      <block type="variables_get">
+        <field name="VAR">list</field>
+      </block>
+    </value>
+  </block>
+  <block type="lists_setIndex">
+    <value name="LIST">
+      <block type="variables_get">
+        <field name="VAR">list</field>
+      </block>
+    </value>
+  </block>
+  <block type="lists_getSublist">
+    <value name="LIST">
+      <block type="variables_get">
+        <field name="VAR">list</field>
+      </block>
+    </value>
+  </block>
+  <block type="lists_split">
+    <value name="DELIM">
+      <shadow type="text">
+        <field name="TEXT">,</field>
+      </shadow>
+    </value>
+  </block>
+  <block type="lists_sort"></block>
+  <block type="lists_reverse"></block>
+</category>
+<category name="Colour" categorystyle="colour_category">
+  <block type="colour_picker"></block>
+  <block type="colour_random"></block>
+  <block type="colour_rgb">
+    <value name="RED">
+      <shadow type="math_number">
+        <field name="NUM">100</field>
+      </shadow>
+    </value>
+    <value name="GREEN">
+      <shadow type="math_number">
+        <field name="NUM">50</field>
+      </shadow>
+    </value>
+    <value name="BLUE">
+      <shadow type="math_number">
+        <field name="NUM">0</field>
+      </shadow>
+    </value>
+  </block>
+  <block type="colour_blend">
+    <value name="COLOUR1">
+      <shadow type="colour_picker">
+        <field name="COLOUR">#ff0000</field>
+      </shadow>
+    </value>
+    <value name="COLOUR2">
+      <shadow type="colour_picker">
+        <field name="COLOUR">#3333ff</field>
+      </shadow>
+    </value>
+    <value name="RATIO">
+      <shadow type="math_number">
+        <field name="NUM">0.5</field>
+      </shadow>
+    </value>
+  </block>
+</category>
+<sep></sep>
+<category name="Variables" categorystyle="variable_category" custom="VARIABLE">
+</category>
+<category name="Functions" categorystyle="procedure_category"
+custom="PROCEDURE"></category>
+</xml>`;
