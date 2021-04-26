@@ -19,7 +19,7 @@ there's various config files;
 - function_signatures.config, method_signatures.config, module_function_signatures.config - I'm not entirely sure what these do but I'm guessing from their titles they help format code where modules/methods/functions where it needs a bit more than statements and expressions
 - toolbox.config = defines the left hand toolbox for blockly
 
-there's a file called blockly_shims which seems to apply a few odds and ends to blockly to get it to work how it needs to, some part if commented that it is to do with case sensitivity in variable names but there's more to it that I haven't learned yet
+there's a file called blockly_shims which seems to apply a few odds and ends to blockly to get it to work how it needs to, some part is commented that it is to do with case sensitivity in variable names but there's more to it that I haven't learned yet
 
 then finally there's a ast folder which has behaviour to deal with each of the node types you might possibly have in the ast produced by skulpt, some of these are short and some are long, each file seems to consist of the function that gets called by the xml generator, in the format
 
