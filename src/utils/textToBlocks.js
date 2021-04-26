@@ -21,7 +21,6 @@ function arrayMin(array) {
 // -------------------------------------------------------- //
 
 export class BlockMirrorTextToBlocks {
-  static TOP_LEVEL_NODES = ["Module", "Expression", "Interactive", "Suite"];
   static LOCKED_BLOCK = {
     inline: "true",
     deletable: "false",
@@ -33,10 +32,12 @@ export class BlockMirrorTextToBlocks {
 
   constructor(blockMirror) {
     this.blockMirror = blockMirror;
-    this.hiddenImports = ["plt"];
-    this.strictAnnotations = ["int", "float", "str", "bool"];
+    this.hiddenImports = [];  // this referenced when compiling an import statement to block
+    this.strictAnnotations = ["int", "float", "str", "bool"];  // this is used to filter out unknown types in strict assignments
     this.TOP_LEVEL_NODES = ["Module", "Expression", "Interactive", "Suite"];
     Blockly.defineBlocksWithJsonArray(BlockMirrorTextToBlocks.BLOCKS);
+
+    BlockMirrorTextToBlocks.create_block("ast_Num", null, {NUM: 0,});
   }
 
   static BLOCKS = [];
@@ -142,11 +143,6 @@ export class BlockMirrorTextToBlocks {
 
   // ------------------------------------------------------------------------------ //
 
-  convertSourceToCodeBlock(python_source) {
-    var xml = document.createElement("xml");
-    xml.appendChild(BlockMirrorTextToBlocks.raw_block(python_source));
-    return BlockMirrorTextToBlocks.xmlToString(xml);
-  }
 
   /**
    * The main function for converting a string representation of Python
@@ -237,6 +233,12 @@ export class BlockMirrorTextToBlocks {
     };
   }
 
+  /**
+   * measures recursion in the block (eg. block contains further statements or expressions)
+   * @param {} node 
+   * @param {*} nextBlockLine 
+   * @returns 
+   */
   recursiveMeasure(node, nextBlockLine) {
     if (node === undefined) {
       return;
@@ -274,12 +276,17 @@ export class BlockMirrorTextToBlocks {
     }
   }
 
+  /**
+   * calculates the heigh of the block (will be higher if it has child nodes eg. for loop, if-then)
+   * @param {} node 
+   */
   measureNode(node) {
     this.heights = [];
     this.recursiveMeasure(node, this.source.length - 1);
     this.heights.shift();
   }
 
+  
   getSourceCode(frm, to) {
     var lines = this.source.slice(frm - 1, to);
     // Strip out any starting indentation.
@@ -292,13 +299,11 @@ export class BlockMirrorTextToBlocks {
     return lines.join("\n");
   }
 
+
   convertBody(node, parent) {
+
     this.levelIndex += 1;
     let is_top_level = this.isTopLevel(parent);
-    // Empty body, return nothing
-    /*if (node.length === 0) {
-        return null;
-    }*/
 
     // Final result list
     var children = [], // The complete set of peers
@@ -397,7 +402,7 @@ export class BlockMirrorTextToBlocks {
       );
 
       // Now convert the actual node
-      var height = this.heights.shift();
+      var height = this.heights.shift();  // height calculation made in measureNode() and recursiveMeasure()
       var originalSourceCode = this.getSourceCode(lineNumberInProgram, height);
       var newChild = this.convertStatement(node[i], originalSourceCode, parent);
 
@@ -612,8 +617,4 @@ export class BlockMirrorTextToBlocks {
   }
 }
 
-Blockly.Python['blank'] = '___';
 
-let ZERO_BLOCK = BlockMirrorTextToBlocks.create_block("ast_Num", null, {
-  NUM: 0,
-});

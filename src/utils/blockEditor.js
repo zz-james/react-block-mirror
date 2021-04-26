@@ -95,7 +95,6 @@ export class BlockMirrorBlockEditor {
     ) {
       let newCode = this.getCode();
       this.blockMirror.textEditor.setCode(newCode, true);
-      this.blockMirror.setCode(newCode, true);
     }
   }
 

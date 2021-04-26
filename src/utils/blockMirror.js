@@ -11,7 +11,7 @@ import { BlockMirrorBlockEditor } from "./blockEditor";
 import { addAstTypes } from "./ast/index";
 
 Blockly.setLocale(En);
-
+Blockly.Python['blank'] = '___';
 export class BlockMirror {
 
   constructor(configuration) {
