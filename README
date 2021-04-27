@@ -10,7 +10,7 @@ the blockMirror constructor finally creates the 3 object which do the work,
 
 1. textToBlocks = contains the stuff that calls skulpt with the code to convert it into an AST and also the stuff to convert the AST into XML for Blockly, 
 
-- look for the convertSource(filename, python_source) method to see where that starts, it calls skulpt.parse to get parse the python into lexemes (hey computer science class finally came  in useful) and then calls skulpt.astFromParse to get the abstract syntax tree (ast) . The ast is JS (kind of JSONy looking but just a native JS data structure)
+- look for the convertSource(filename, python_source) method to see where that starts, it calls skulpt.parse to parse the python into lexemes (hey computer science class finally came  in useful) and then calls skulpt.astFromParse to get the abstract syntax tree (ast) . The ast is JS (kind of JSONy looking but just a native JS data structure)
 
 2. textEditor = wraps codemirror and handles the get and set methods for code in codemirror
 
