@@ -19,7 +19,7 @@ the blockMirror constructor finally creates the 3 object which do the work,
 there's various config files;
 - color.config = holds colour values which blockly uses for categories of blocks 
 - function_signatures.config, method_signatures.config, module_function_signatures.config - these enable certain functions and methods to be converted into a canonical 'block', the module_function_signatures one in this case is entirely for a turtle module used on https://think.cs.vt.edu/blockpy/ but seems useful guide so left it in
-- toolbox.config = defines the left hand toolbox for blockly
+- toolbox.config = defines the left hand toolbox for blockly (btw this can be done dynamically if it needs to be)
 
 then finally there's a ast folder which has behaviour to deal with each of the node types you might possibly have in the ast produced by skulpt, some of these are short and some are long, each file seems to consist of the function that gets called by the xml generator, in the format
 
